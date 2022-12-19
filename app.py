@@ -13,7 +13,6 @@ import os
 import numpy as np
 import skimage
 import skimage.measure
-from PyPatchMatch import patch_match
 from getScheduler import getScheduler, SCHEDULERS
 from getPipeline import getPipelineForModel, listAvailablePipelines, clearPipelines
 import re

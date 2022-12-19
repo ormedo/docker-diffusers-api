@@ -42,11 +42,11 @@ RUN apt-get install -yqq zstd
 #RUN ln -sf /usr/bin/python3.10 /usr/bin/python3
 #RUN ln -sf /usr/bin/python3.10 /usr/bin/python
 
-FROM base AS patchmatch
-ARG USE_PATCHMATCH=0
-WORKDIR /tmp
-COPY scripts/patchmatch-setup.sh .
-RUN sh patchmatch-setup.sh
+#FROM base AS patchmatch
+#ARG USE_PATCHMATCH=0
+#WORKDIR /tmp
+#COPY scripts/patchmatch-setup.sh .
+#RUN sh patchmatch-setup.sh
 
 FROM base as output
 RUN mkdir /api
@@ -92,7 +92,7 @@ EXPOSE 8000
 # Dev: docker build --build-arg HF_AUTH_TOKEN=${HF_AUTH_TOKEN} ...
 # Banana: currently, comment out ARG and set by hand ENV line.
 ARG HF_AUTH_TOKEN
-ENV HF_AUTH_TOKEN=${HF_AUTH_TOKEN}
+ENV HF_AUTH_TOKEN="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"
 
 # MODEL_ID, can be any of:
 # 1) Hugging face model name
@@ -103,7 +103,7 @@ ENV HF_AUTH_TOKEN=${HF_AUTH_TOKEN}
 # "CompVis/stable-diffusion-v1-4", "hakurei/waifu-diffusion",
 # "stabilityai/stable-diffusion-2",
 # "stabilityai/stable-diffusion-2-inpainting" etc.
-ARG MODEL_ID="stabilityai/stable-diffusion-2"
+ARG MODEL_ID="prompthero/openjourney"
 ENV MODEL_ID=${MODEL_ID}
 
 # "" = model default.
@@ -156,9 +156,9 @@ ADD download.py .
 RUN if [ "$RUNTIME_DOWNLOADS" = "0" ] ; then python3 download.py ; fi
 
 # Deps for RUNNING (not building) earlier options
-ARG USE_PATCHMATCH=0
-RUN if [ "$USE_PATCHMATCH" = "1" ] ; then apt-get install -yqq python3-opencv ; fi
-COPY --from=patchmatch /tmp/PyPatchMatch PyPatchMatch
+##ARG USE_PATCHMATCH=0
+#RUN if [ "$USE_PATCHMATCH" = "1" ] ; then apt-get install -yqq python3-opencv ; fi
+#COPY --from=patchmatch /tmp/PyPatchMatch PyPatchMatch
 
 ARG USE_DREAMBOOTH=0
 ENV USE_DREAMBOOTH=${USE_DREAMBOOTH}
